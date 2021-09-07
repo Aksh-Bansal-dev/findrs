@@ -1,19 +1,17 @@
-//struct Cli {
-//    pattern: String,
-//    path: std::path::PathBuf,
-//}
+mod help;
 
 fn main() {
-    let pattern = std::env::args().nth(1).expect("no pattern given");
-    let path = std::env::args().nth(2).expect("no path given");
+    let len = std::env::args().len();
+    let pattern = std::env::args().nth(len-2).expect("no pattern given");
+    let path = std::env::args().nth(len-1).expect("no path given");
 
-    
-    for i in 3..std::env::args().len(){
-        //match std::env::args().nth(3) {
-        //    Some(_v) => panic!("too many arguments"), 
-        //    None => break, 
-        //}
-        print!("{}\n", std::env::args().nth(i).unwrap());
+    for i in 1..len{
+        let arg = std::env::args().nth(i).unwrap();
+        match arg.as_str() {
+            "-i" | "--ignore-case" => print!("CASE INSENSITIVE\n"),
+            "-h" | "--help" => { help::print_help(); return},
+            _ => ()
+        }
     }
 
     let contents = std::fs::read_to_string(path).expect("Invalid path");
