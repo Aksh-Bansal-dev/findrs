@@ -10,6 +10,6 @@ pub fn print_help(){
         "-i, --ignore-case" ,
         "Case insensitive search",
         "-h, --help",
-        "display help for findr"
+        "display help for findrs"
     );
 }

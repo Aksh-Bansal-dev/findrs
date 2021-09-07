@@ -1,40 +1,40 @@
-mod help;
+mod utils;
+
+struct Arg{
+    pattern: String,
+    path: String,
+    ignore_case: bool
+}
 
 fn main() {
     let len = std::env::args().len();
-    let pattern = std::env::args().nth(len-2).expect("no pattern given");
-    let path = std::env::args().nth(len-1).expect("no path given");
+    let mut arg: Arg = Arg{
+        pattern: std::env::args().nth(len-2).expect("no pattern given"),
+        path: std::env::args().nth(len-1).expect("no path given"),
+        ignore_case: false
+    };
 
     for i in 1..len{
-        let arg = std::env::args().nth(i).unwrap();
-        match arg.as_str() {
-            "-i" | "--ignore-case" => print!("CASE INSENSITIVE\n"),
-            "-h" | "--help" => { help::print_help(); return},
+        let cur = std::env::args().nth(i).unwrap();
+        match cur.as_str() {
+            "-i" | "--ignore-case" => arg.ignore_case = true,
+            "-h" | "--help" => { utils::help::print_help(); return},
             _ => ()
         }
     }
 
-    let contents = std::fs::read_to_string(path).expect("Invalid path");
+    // Searching single file
+    let time_start = std::time::SystemTime::now();
+
+    let contents = std::fs::read_to_string(arg.path).expect("Invalid path");
     let arr: Vec<&str> = contents.split('\n').collect();
 
     for i in 0..arr.len(){
-        if present(&pattern, arr[i], true) {
+        if utils::is_present(&arg.pattern, arr[i], arg.ignore_case) {
             print!("[{}] {}\n", i+1, arr[i]);
         }
     }
-}
 
-fn present(pattern:&str, s: &str, case_sensitive: bool)-> bool{
-    let arr: Vec<&str> = s.split(' ').collect();
-
-    for str in arr{
-        if str==pattern{
-            return true;
-        }
-        else if case_sensitive && str.to_lowercase() == pattern.to_lowercase() {
-            return true;
-        }
-    }
-    false
+    print!("\nExecuted in {}ms\n", time_start.elapsed().unwrap().as_millis());
 }
 
