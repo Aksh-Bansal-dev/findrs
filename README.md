@@ -12,3 +12,11 @@ Options:
 	-h, --help          	 display help for findrs
 	-d, --dir           	 search all the files in the directory
 ```
+
+#### Example
+
+```
+cargo run -- -d -r "^then" ./demo
+```
+
+This will search for 'then' at the beginning of line in the demo folder recursively.

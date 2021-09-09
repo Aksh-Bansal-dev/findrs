@@ -1,10 +1,13 @@
+use colored::*;
+
 mod utils;
 
 struct Arg{
     pattern: String,
     path: String,
     ignore_case: bool,
-    is_dir: bool
+    is_dir: bool,
+    regex: bool
 }
 
 fn main() {
@@ -13,7 +16,8 @@ fn main() {
         pattern: std::env::args().nth(len-2).expect("no pattern given"),
         path: std::env::args().nth(len-1).expect("no path given"),
         ignore_case: false,
-        is_dir: false
+        is_dir: false,
+        regex: false
     };
 
     for i in 1..len{
@@ -21,6 +25,7 @@ fn main() {
         match cur.as_str() {
             "-i" | "--ignore-case" => arg.ignore_case = true,
             "-d" | "--dir" => arg.is_dir = true,
+            "-r" | "--regex" => arg.regex = true,
             "-h" | "--help" => { utils::help::print_help(); return},
             _ => ()
         }
@@ -62,13 +67,13 @@ fn search_file(path:&str, arg:&Arg){
     let mut check = false;
 
     for i in 0..arr.len(){
-        if utils::is_present(&arg.pattern, arr[i], arg.ignore_case) {
+        if utils::is_present(&arg.pattern, arr[i], arg.ignore_case, arg.regex) {
             check = true;
-            res.push_str(&format!("[{}] {}\n", i+1, arr[i]));
+            res.push_str(&format!("{} {}\n", (i+1).to_string().yellow(), arr[i]));
         }
     }
     if check {
-        print!("\n[{}]\n{}",get_filepath(path), res) ;
+        print!("\n[{}]\n{}",get_filepath(path).blue(), res) ;
     }
 }
 
