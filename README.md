@@ -1,4 +1,5 @@
 # findrs
+
 Search for patterns in files
 
 ## How to use
@@ -6,7 +7,8 @@ Search for patterns in files
 ```
 Usage: findrs <PATTERN> <PATH> [OPTIONS]
 
-Options: 
-	-i, --ignore-case   	 Case insensitive search                 
+Options:
+	-i, --ignore-case   	 Case insensitive search
 	-h, --help          	 display help for findrs
+	-d, --dir           	 search all the files in the directory
 ```
