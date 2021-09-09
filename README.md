@@ -23,7 +23,7 @@ Options:
 #### Example
 
 ```
-cargo run -- -d -r "^then" ./demo
+findrs -d -r "^then" ./demo
 ```
 
 This will search for 'then' at the beginning of line in the demo folder recursively.
