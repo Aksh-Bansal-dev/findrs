@@ -2,6 +2,13 @@
 
 Search for patterns in files
 
+## How to install
+
+```
+cargo install --locked --all-features \
+  --git https://github.com/Aksh-Bansal-dev/findrs
+```
+
 ## How to use
 
 ```
